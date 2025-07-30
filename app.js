@@ -6,6 +6,7 @@ const resultsRouter = require('./controllers/resultsRouter')
 
 app.use(cors())
 app.use(express.json())
+app.use(express.static('dist'))
 app.use(middleware.requestLogger)
 app.use('/api/results', resultsRouter)
 app.use(middleware.unknownEndpoint)

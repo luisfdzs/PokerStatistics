@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose')
 
 const resultSchema = new Schema({
+  mode: String,
+  date: Date,
   buyIn: Number,
   winnings: Number,
 })

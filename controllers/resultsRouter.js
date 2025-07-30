@@ -8,6 +8,21 @@ resultsRouter.get('/', (request, response, next) => {
     .catch((error) => next(error))
 })
 
+resultsRouter.get('/Expresso1/today', (request, response, next) => {
+  Result.find({
+    mode: 'Expresso',
+    buyIn: 1,
+    date: {
+      $gte: new Date().setHours(0, 0, 0, 0),
+      $lte: new Date().setHours(23, 59, 59, 999),
+    },
+  })
+    .then((results) => {
+      response.status(200).json(results)
+    })
+    .catch((error) => next(error))
+})
+
 resultsRouter.get('/:id', (request, response, next) => {
   const { id } = request.params
   if (!mongoose.Types.ObjectId.isValid(id))
@@ -22,8 +37,10 @@ resultsRouter.get('/:id', (request, response, next) => {
 })
 
 resultsRouter.post('/', (request, response, next) => {
-  const { buyIn, winnings } = request.body
+  const { mode, buyIn, winnings } = request.body
   const result = {
+    mode: mode,
+    date: new Date(),
     buyIn: buyIn,
     winnings: winnings,
   }
@@ -37,8 +54,10 @@ resultsRouter.put('/:id', (request, response, next) => {
   const { id } = request.params
   if (!mongoose.Types.ObjectId.isValid(id))
     return response.status(400).json({ error: 'Result not found' })
-  const { buyIn, winnings } = request.body
+  const { mode, buyIn, winnings } = request.body
   const result = {
+    mode: mode,
+    date: new Date(),
     buyIn: buyIn,
     winnings: winnings,
   }
